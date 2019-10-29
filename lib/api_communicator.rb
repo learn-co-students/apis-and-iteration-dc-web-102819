@@ -6,7 +6,6 @@ def api_to_json(url)
   api_string = RestClient.get(url)
   json_hash = JSON.parse(api_string)
 end
-
   
 def get_character_movies_from_api(character_name) #=> Passed 'luke skywalker'
   #make the web request
@@ -24,7 +23,7 @@ def get_character_movies_from_api(character_name) #=> Passed 'luke skywalker'
       #   characterfilms.push(movie_data)
       # end
 
-      person["films"].map { |film| movie_data = api_to_json(film) }
+  person["films"].map { |film| movie_data = api_to_json(film) }
 
   # collect those film API urls, make a web request to each URL to get the info
   #  for that film
@@ -33,12 +32,13 @@ def get_character_movies_from_api(character_name) #=> Passed 'luke skywalker'
   # this collection will be the argument given to `print_movies`
   #  and that method will do some nice presentation stuff like puts out a list
   #  of movies by title. Have a play around with the puts with other info about a given film.
+
 end
 
 def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
   films.each do |film|
-    puts film["title"]
+    puts "Star Wars Episode #{film["episode_id"]}: #{film["title"]}"
   end
 end
 
