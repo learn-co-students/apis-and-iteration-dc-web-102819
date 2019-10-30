@@ -14,7 +14,7 @@ def get_character_movies_from_api(character_name)
   found_character["films"].each do |url|
     res = RestClient.get(url)
     film_hash = JSON.parse(res)
-    movie_name_array << film_hash
+    movie_name_array.push(film_hash)
     #binding.pry
   end
   return movie_name_array
@@ -34,7 +34,7 @@ def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
   films.each do |movie_array|
     puts movie_array["title"]
-  end  
+  end
 end
 
 def show_character_movies(character)
