@@ -2,10 +2,31 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def get_character_movies_from_api(character_name)
-  #make the web request
-  response_string = RestClient.get('http://www.swapi.co/api/people/')
+def get_json(url)
+  #method to make web request
+  response_string = RestClient.get(url)
   response_hash = JSON.parse(response_string)
+  response_hash
+end
+
+def get_character_movies_from_api(character_name)
+  film_info=[]
+  char_films = nil
+  #use get_json method to make web request
+  response_hash = get_json('http://www.swapi.co/api/people/')
+  response_hash["results"].each do |character|
+    if character["name"].downcase == character_name
+      char_films = character["films"]
+    end
+  end
+  #store json info for each film in film_info array
+  char_films.each do |film|
+    film_info << get_json(film)
+  end
+  #return array of film info
+  film_info
+
+
 
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
@@ -18,14 +39,32 @@ def get_character_movies_from_api(character_name)
   #  of movies by title. Have a play around with the puts with other info about a given film.
 end
 
+
 def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
+  films.each do |film|
+    puts film["title"]
+  end
+
 end
 
 def show_character_movies(character)
   films = get_character_movies_from_api(character)
+  #binding.pry
   print_movies(films)
 end
+
+def get_films_with_r(character)
+  #iterate over character's films and return all that start with 'r'
+  films = get_character_movies_from_api(character)
+  r_films = films.find_all {|film|film["title"][0].downcase=="r"}
+  puts "**************"
+  r_films.each do |film|
+    puts film["title"]
+  end
+end
+
+
 
 ## BONUS
 
